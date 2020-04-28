@@ -1,0 +1,139 @@
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/html5reset.css">
+  <link rel="stylesheet" href="css/html.css">
+</head>
+<body>
+
+
+<h1>Offense Detection</h1>
+
+<h2>Introduction</h2>
+Nowadays, social media is an essential part of our daily life. Everyday, we browse through
+Twitter, Facebook, Instagram and Reddit, acquiring entertainment gossip, international
+events, and sports news. We expresss ourselves and exchange with others in this virtual
+world, broadening our horizons and make joy. However, website is also a place full
+of malice, anger and bias. Anonymous environment allows some people to attack on others
+unscrupulously. Such offense texts not only spoil one's good mood, but even worse,
+spreads discrimination and hatred towards individuals or vulnerable groups, and leads
+ to breaking of social harmony and happiness.<br>
+ Offense detection has been an overlasting topics in Natural Language Processing.
+ Due to hundreds of thousands of information in the internet, manual check is
+ obviously unrealistic. That's where Artificial Intelligence shows its power. Thanks to the power
+ of word to vector embedding, and memory mantaining neural network LSTM, today,
+ we are gonna solve the problems in the most effective way.
+
+ <h2>Data</h2>
+ The dataset we use is OLID-training dataset from <a href="https://sites.google.com/site/offensevalsharedtask/">OffensEval 2020</a>.
+ This dataset contains 13241 tweets, each has 3 labels,
+ representing whether it is offensive, it is tageted offensive,
+  and what is it targeted at, which corresponds to
+  task A, B and C of this research. Following Table
+  shows distribution of labels for each task in the dataset.
+<!-- <table>
+  <tr>
+    <th>class</th><th>Task A</th>
+    <th>class</th><th>Task B</th>
+    <th>class</th><th>Task C</th>
+  </tr>
+  <tr>
+    <td>OFF</td><td>4400</td>
+    <td>TIN</td><td>3876</td>
+    <td>GRP</td><td>1074</td>
+  </tr>
+  <tr>
+    <td></td><td></td>
+    <td></td><td></td>
+    <td>OTH</td><td>395</td>
+  </tr>
+  <caption>Table 1.class distribution</caption>
+</table> -->
+<figure>
+  <img src="images/t1dist.png" alt="no dist" width="500">
+  <!-- <figcaption>Table 1. class distribution</figcaption> -->
+</figure>
+
+There is also another table shows the most common words
+in tweets
+<!-- <table>
+  <tr>
+    <th>Word</th><th>counts</th>
+  </tr>
+  <tr>
+    <td>user</td><td>33415</td>
+  </tr>
+  <tr>
+    <td>url</td><td>2055</td>
+  </tr>
+  <tr>
+    <td>liberals</td><td>1417</td>
+  </tr>
+  <tr>
+    <td>gun</td><td>1368</td>
+  </tr>
+  <tr>
+    <td>control</td><td>1216</td>
+  </tr>
+  <tr>
+    <td>antifa</td><td>1189</td>
+  </tr>
+  <tr>
+    <td>like</td><td>1113</td>
+  </tr>
+  <tr>
+    <td>maga</td><td>1013</td>
+  </tr>
+  <tr>
+    <td>conservative</td><td>956</td>
+  </tr>
+  <caption>Table 2.Most frequent words</caption>
+</table> -->
+<figure>
+  <img src="images/t2feature.png" alt="no feature"width="300">
+  <!-- <figcaption>Table 2. Most Frequent Features</figcaption> -->
+</figure>
+<h2>Methods</h2>
+To convert text features into numeric, we perform
+the method of <a href="https://github.com/stanfordnlp/GloVe">Glove</a> from Stanford
+to calculate embedding for each word. The word vector
+dimension is set as 25. The code is as following.<br>
+<img src="images/a1embed.png" alt="no embed"width="500"><br>
+I use a Recurrent Neural Network to do the classification
+work on the texts. The netowrk is a 4 layers structure.
+The first layer is the embedding layer. The second layer
+ is LSTM layer with input size 25 and output size 40.
+ The third layer is linear layer, with input size 40,
+ output size 16, and activation function ReLU. The final
+ layer is output layer, with input size 16 and output size 2.
+ The input to this network is the word, while the output
+ are 2 nodes, each represents one class.<br>
+ <img src="images/a2network.png" alt="no network"width="500"><br>
+<h2>Results and Discussions</h2>
+The classification performance for Task A, whether the tweet
+is offensive, is as Following <br>
+<img src="images/t3taska.png" alt="no task a" width="300"><br>
+The classification performance for Task B, whether the
+offensive tweet is targeted at something, is as following <br>
+<img src="images/t4taskb.png" alt="no task b" width="300"><br>
+The classification result for Task C, what the offensive
+tweet is targeted at, has following performance <br>
+<img src="images/t5taskc.png" alt="no task c" width="300"> <br>
+In above results, we can see peormance of both 2 baselines
+ and LSTM model. We can see that LSTM outperform
+ the previous in most tasks. In task B, LSTM model
+  has a execellent high accuracy of 90%. However,
+  in Task A and C, LSTM model only has 75% and 63%,
+  not very advantageous compared to baselines. There
+  is still a large space of improvement, especially
+  in word to vector strategy and network structure.
+  However, generally the performance of LSTM model
+  is good and acceptable.
+  <h2>What's Next</h2>
+In my approach, I solve the 3 tasks with independent
+models, but we can clearly observe connection within
+them. A more ambitious stratgy is to solve all the
+tasks with single model. We can try link each model
+with modifiable weights, and update them together
+in each iteration. Such research may reveal more
+internal discipline in offense detection.
+</body>
